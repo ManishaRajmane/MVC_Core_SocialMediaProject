@@ -1,0 +1,74 @@
+﻿@model Tbluser
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/MyMainLyaout.cshtml";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6" style="padding:2%;"></div>
+        <div class="col-md-6" style="padding:2%;">
+            @using (Html.BeginForm("Register","Account",FormMethod.Post,new { @enctype="multipart/form-data"}))
+            { 
+                   <div class="card">
+                       <div class="card-header">
+                           <h4>User Registration</h4>
+                       </div>
+                       <div class="card-body">
+                           <div class="row">
+                                <div class="">
+                                   <div class="mb-3">
+                                       <label>User Name :</label>
+                                       @Html.TextBoxFor(e=>e.UserName,new {@class = "form-control"})
+                                   </div>
+                                </div>
+                            
+                                <div class="">
+                                    <div class="mb-3">
+                                    <label>Gender :</label><br />
+                                        @Html.RadioButtonFor(e => e.Gender,"Male")<span>Male</span>
+                                        @Html.RadioButtonFor(e => e.Gender,"Female")<span>Female</span>
+                                    </div>
+                                </div>
+                            
+                                <div class="">
+                                    <div class="mb-3">
+                                    <label>Email Address :</label>
+                                        @Html.TextBoxFor(e => e.EmailAddress, new { @class = "form-control" })
+                                    </div>
+                                </div>  
+                           </div>
+
+                            <div class="row">
+                                <div class="">
+                                    <div class="mb-3">
+                                    <label>Mobile Number :</label>
+                                        @Html.TextBoxFor(e => e.MobileNumber, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="">
+                                    <div class="mb-3">
+                                    <label>City :</label><br />
+                                        @Html.TextBoxFor(e => e.City, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="">
+                                    <div class="mb-3">
+                                    <label>Upload Photo :</label><br />
+                                        <input type="file" name="photo"/>
+                                        </div>
+                                </div>
+                            </div>
+                       </div>
+                       <div class="card-footer">
+                           <input type="submit" value="Submit" class="btn btn-primary"/>
+                        <h4>@ViewBag.msg</h4>
+                       </div>
+                   </div> 
+                }
+            </div>
+    </div>
+</div>
+
+                

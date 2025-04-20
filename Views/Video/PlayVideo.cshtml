@@ -1,0 +1,207 @@
+﻿@model TbltopicContent
+@using MVC_Core_SocialMediaProject.Models
+@{
+    ViewData["Title"] = "PlayVideo";
+    Layout = "~/Views/Shared/MyMainLyaout.cshtml";
+}
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+rel="stylesheet">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    var items = [];
+    $(document).ready(function() 
+    {
+    GetTopics();
+
+    $("#txtfilter").autocomplete
+    ({
+    source: items
+    });
+    })
+
+    function GetTopics()
+    {
+    $.ajax
+    ({
+    url:'/Topic/GetAllTopics',
+    method:'get',
+    success:function(resp)
+    {
+    console.log(resp);
+
+    $.each(resp,function(i,d)
+    {
+    items.push(d.topicName)
+    })
+    }
+    });
+    }
+
+    function AddComment()
+    {
+    var comment = $("#txtcomment").val();
+    var content_id = @Model.ContentId;
+
+    var st={
+    "content_id":content_id,
+    "comment_message":comment
+    };
+    $.ajax({
+    url:'/Video/AddComments',
+    method:'post',
+    data:st,
+    success:function(resp){
+    alert(resp);
+    window.location.reload();
+    }
+    });
+    }
+
+    function AddLike()
+    {
+    var content_id = @Model.ContentId;
+
+    var st={
+    "ContentId":content_id,
+    "IsLike":1
+    };
+    $.ajax({
+    url:'/Video/AddLikeDisLike',
+    method:'post',
+    data:st,
+    success:function(resp){
+    //alert(resp);
+    window.location.reload();
+    }
+    });
+    }
+
+    function AddDislike()
+    {
+    var content_id = @Model.ContentId;
+
+    var st={
+    "ContentId":content_id,
+    "IsLike":2
+    };
+    $.ajax({
+    url:'/Video/AddLikeDisLike',
+    method:'post',
+    data:st,
+    success:function(resp){
+    //alert(resp);
+    window.location.reload();
+    }
+    });
+    }
+
+</script>
+
+<div class="container" style="padding-top:2%">
+    @using (Html.BeginForm("Index", "Video", FormMethod.Post))
+    {
+        <div class="row mb-3">
+            <div class="col-md-10" style="padding-right:0px;">
+                <input type="text" class="form-control" name="txtfilter" id="txtfilter" placeholder="search video by topic name" />
+
+            </div>
+            <div class="col-md-2" style="padding-left:0px;">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </div>
+    }
+    @{
+        List<TblcontentVideoLike> likes = (List<TblcontentVideoLike >)ViewData["like"];
+        var liked =likes.Where(e => e.IsLike== 1).Count();
+        var DisLike = likes.Where(e => e.IsLike == 2).Count();
+    }
+    <div class="row ">
+        <div class="col-md-10">
+            <h5>@Model.ContentName</h5>
+            <video style="height:500px;width:100%;background-color:darkgray;border:1px solid gray" controls muted autoplay>
+                <source src="~/TopicContent//@Model.TopicId/@Model.VideoUrl" />
+            </video>
+
+            <div>
+                @if (@liked==0)
+                {
+                    <button style="border:none" class="btn" onclick="AddLike()">
+                        <img src="~/Images/Like.png" style="height:40px;width:40px;border-radius:50%"/>
+                    </button>
+                }
+                @if (@DisLike==0)
+                {
+                    <button style="border:none" class="btn" onclick="AddDislike()">
+                        <img src="~/Images/DisLike.png" style="height:40px;width:40px;border-radius:50%"/>
+                    </button>
+                }
+            </div>
+            <span><b>@liked</b>Like</span>&nbsp;
+            <span><b>@DisLike</b>DisLike</span>
+            <hr />
+            @{
+                List<UserCommentModel> comments = (List<UserCommentModel>)ViewData["comments"];
+            }
+            <div class="card">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label>Comment Message :</label>
+                    </div>
+                    <div class="mb-3">
+                        <textarea class="form-control" id="txtcomment"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <input type="button" value="Submit" onclick="AddComment()" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <h4>Comments :<span>@comments.Count()</span></h4>
+            <div class="card">
+            @foreach (var item in comments)
+            {
+                <div class="mb-1">
+                    <div class="card-body">
+                        <div>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td>Comment By :<b>@item.user_name</b></td>
+                                    <td style="text-align:right">Comment Date : <b>@item.comment_date.ToString()</b></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div>
+                            <b>Comment Message :</b>
+                            <p>@item.comment_message</p>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+            }
+            </div>
+        </div>
+        <div class="col-md-2">
+            @{
+                List<TbltopicContent> lst = (List<TbltopicContent>)ViewData["contents"];
+            }
+            <ul class="list-group">
+                @foreach (var item in lst)
+                {
+                    <li class="list-group-item">
+                        <a href="/Video/PlayVideo/@item.ContentId" style="text-decoration:none">
+
+                            <video style="height:100px;width:100%" controls>
+                                <source src="~/TopicContent/@item.TopicId/@item.VideoUrl" />
+                            </video>
+                            <span>@item.ContentName</span>
+
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+        
+    </div>
+</div>
+

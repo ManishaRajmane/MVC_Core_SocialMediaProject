@@ -1,0 +1,51 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using Newtonsoft.Json;
+@inject IHttpContextAccessor Accessor
+@{
+    Layout = null;
+}
+@{
+    string user = Accessor.HttpContext.Session.GetString("User_Name");
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MyMainLyaout</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a href="#" class="navbar-brand">Ciit Coder</a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse2">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse2">
+                @if (Accessor.HttpContext.Session.GetString("User_Name") != null)
+                {
+                    <div class="navbar-nav ms-auto">
+                        <a class="nav-item nav-link" style="color:white">
+                            <img src="~/Users/@user" style="height:40px;width:40px" class="rounded-circle" alt="UserPhoto" />
+                        </a>
+                        <a href="/Account/Login" style="color:white" class="nav-item nav-link">Welcome @user</a>
+                        <a href="/Account/Logout" class="nav-item nav-link">Log Out</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="navbar-nav ms-auto">
+                        <a href="/Account/Login" class="nav-item nav-link">Login</a>
+                        <a href="/Account/Register" class="nav-item nav-link">Register</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </nav>
+   @RenderBody()
+</body>
+</html>

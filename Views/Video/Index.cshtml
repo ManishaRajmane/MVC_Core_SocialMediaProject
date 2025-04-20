@@ -1,0 +1,65 @@
+﻿@model IEnumerable<TbltopicContent>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/MyMainLyaout.cshtml";
+}
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    var items=[];
+
+    $(document).ready(function(){
+    // List of Items
+    GetTopics();
+    // jQuery inbuild function.
+    $("#txtfilter").autocomplete({
+    // This function takes words list as a source.
+    source: items
+    });
+    })
+
+    function GetTopics()
+    {
+    $.ajax({
+    url:'/Topic/GetAllTopics',
+    method:'get',
+    success:function(resp)
+    {
+    $.each(resp,function(i,d){
+    items.push(d.topicName)
+    })
+    }
+    })
+    }
+</script>
+
+<div class="container" style="padding-top:2%">
+    @using (Html.BeginForm())
+    {
+        <div class="row">
+            <div class="col-md-10" style="padding-right:0px;">
+                <input type="text" class="form-control" name="txtfilter" id="txtfilter" placeholder="search video by topic name" />
+
+            </div>
+            <div class="col-md-2" style="padding-left:0px;">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </div>
+    }
+    <div class="row">
+        @foreach (var item in Model)
+        { 
+            <div class="col-md-2" style="padding-top:2%;">
+
+                <a href="/Video/PlayVideo/@item.ContentId" style="text-decoration:none">
+
+                    <video style="height:200px;width:100%" controls muted>
+                        <source src="~/TopicContent/@item.TopicId/@item.VideoUrl" />
+                    </video>
+                    <span>@item.ContentName</span>
+                </a>    
+            </div>
+        }
+    </div>
+</div>
+

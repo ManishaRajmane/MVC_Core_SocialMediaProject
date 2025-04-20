@@ -1,0 +1,52 @@
+﻿@model Tbltopic
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row" style="padding-top:2%">
+        <div class="col-md-4">
+            @using (Html.BeginForm())
+            { 
+                <div class="card">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label>Topic Name</label>
+                            @Html.TextBoxFor(e=>e.TopicName,new {@class = "form-control"})
+                        </div>
+                        <div class="mb-3">
+                            <input type="submit"  value="Submit" class="btn btn-primary"/>
+                            <h4>@ViewBag.msg</h4>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-md-8">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Sr No</th>
+                        <th>Topic Name</th>
+                    </tr>
+                </thead>
+                @{
+                    List<Tbltopic> lst = (List<Tbltopic>)ViewData["topics"];
+                    int i = 1;
+                }
+                <tbody>
+                    @foreach (var item in lst)
+                    { 
+                        <tr>
+                            <td>@i</td>
+                            <td>@item.TopicName</td>
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

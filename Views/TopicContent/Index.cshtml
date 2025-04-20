@@ -1,0 +1,85 @@
+﻿@model TbltopicContent
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4" style="padding-top:2%">
+            @using (Html.BeginForm("Index","TopicContent",FormMethod.Post,new { @enctype="multipart/form-data"}))
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <h4>Add Topic Content :</h4>
+                        </div>
+                        <div class="mb-3">
+                            <label>Select Topic </label>
+                            @Html.DropDownListFor(e => e.TopicId, ViewBag.topics as SelectList, "Select Topic", new { @class = "form-control" })
+                        </div>
+                        <div class="mb-3">
+                            <label>Content Name</label>
+                            @Html.TextBoxFor(e => e.ContentName, new { @class = "form-control" })
+                        </div>
+                        <div class="mb-3">
+                            <label>Upload Video</label>
+                            <input type="file" name="video" class="form-control"/>
+                        </div>
+                        <div class="mb-3">
+                            <label>Cover Photo</label>
+                            <input type="file" name="photo" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <input type="submit" value="Submit" class="btn btn-primary" />
+                            <h4>@ViewBag.msg</h4>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-md-8" style="padding-top:2%">
+            <table class="table table-bordered w-100">
+                <thead> 
+                    <tr>
+                        <th>Sr No</th> 
+                        <th>Content Name</th> 
+                        <th>Topic Name</th> 
+                        <th>Cover Photo</th> 
+                        <th>Video</th> 
+                    </tr>
+                </thead> 
+                @{
+                    List<TbltopicContent> lst = (List<TbltopicContent>)ViewData["contents"]; 
+                    int i = 1;
+                } 
+                <tbody> 
+                    @foreach (var item in lst) 
+                    { 
+                        <tr>
+                            <td>@i</td>
+                            <td>@item.ContentName</td> 
+                            <td>@item.Topic.TopicName</td> 
+                            <td>
+                                <img src="~/TopicContent/@item.TopicId/@item.CoverPhoto" height="100" width="120" />
+                            </td> 
+                            <td>
+                                <video style="height:150px;width:200px" controls>
+                                    <source src="~/TopicContent/@item.TopicId/@item.VideoUrl" />
+                                </video>
+                            </td>
+                            @* <td>
+                                <video controls height="100px" width="120px">
+                                    <source src="~/TopicContent/@item.TopicId/@item.VideoUrl" />
+                                </video>
+                            </td> *@
+                        </tr>
+                        i++;
+                    }
+                    
+                 </tbody> 
+             </table>
+        </div>
+    </div>
+</div>
+

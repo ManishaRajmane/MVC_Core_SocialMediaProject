@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Core_SocialMediaProject", "MVC_Core_SocialMediaProject.csproj", "{950EFDC6-5B2D-4E08-9ACC-A118A7630600}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{950EFDC6-5B2D-4E08-9ACC-A118A7630600}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{950EFDC6-5B2D-4E08-9ACC-A118A7630600}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{950EFDC6-5B2D-4E08-9ACC-A118A7630600}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{950EFDC6-5B2D-4E08-9ACC-A118A7630600}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
